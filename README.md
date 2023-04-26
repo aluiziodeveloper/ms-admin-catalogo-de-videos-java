@@ -1,6 +1,6 @@
 # FullCycle Course
 
-## Microsserviço: Admin do Catálogo de Vídeos com Java
+## Projeto Prático - Backend Java (Microservice)
 
 Microserviço referente ao backend da Administração do Catálogo de Vídeos utilizando:
 
