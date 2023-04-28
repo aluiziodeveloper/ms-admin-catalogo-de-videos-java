@@ -2,7 +2,7 @@ package br.com.aluiziodeveloper.admin.catalogo.application.category.create;
 
 import br.com.aluiziodeveloper.admin.catalogo.domain.category.Category;
 import br.com.aluiziodeveloper.admin.catalogo.domain.category.CategoryGateway;
-import br.com.aluiziodeveloper.admin.catalogo.domain.validation.handler.ThrowsValidationHandler;
+import br.com.aluiziodeveloper.admin.catalogo.domain.validation.handler.Notification;
 
 import java.util.Objects;
 
@@ -20,8 +20,14 @@ public class DefaultCreateCategoryUseCase extends CreateCategoryUseCase {
         final var aDescription = aCommand.description();
         final var isActive = aCommand.isActive();
 
+        final var notification = Notification.create();
+
         final var aCategory = Category.newCategory(aName, aDescription, isActive);
-        aCategory.validate(new ThrowsValidationHandler());
+        aCategory.validate(notification);
+
+        if (notification.hasError()) {
+            //
+        }
 
         return CreateCategoryOutput.from(this.categoryGateway.create(aCategory));
     }
