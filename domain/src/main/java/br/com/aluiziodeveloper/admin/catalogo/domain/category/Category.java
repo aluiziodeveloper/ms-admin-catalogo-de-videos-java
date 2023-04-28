@@ -1,5 +1,6 @@
 package br.com.aluiziodeveloper.admin.catalogo.domain.category;
 
+import br.com.aluiziodeveloper.admin.catalogo.domain.validation.ValidationHandler;
 import br.com.aluiziodeveloper.admin.catalogo.domain.AggregateRoot;
 import java.time.Instant;
 
@@ -33,6 +34,11 @@ public class Category extends AggregateRoot<CategoryID> {
         final var id = CategoryID.unique();
         final var now = Instant.now();
         return new Category(id, aName, aDescription, isActive, now, now, null);
+    }
+
+    @Override
+    public void validate(final ValidationHandler handler) {
+        new CategoryValidator(this, handler).validate();
     }
 
     public CategoryID getId() {
