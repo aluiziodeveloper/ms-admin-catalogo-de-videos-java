@@ -1,9 +1,6 @@
 package br.com.aluiziodeveloper.admin.catalogo.application;
 
-import br.com.aluiziodeveloper.admin.catalogo.domain.category.Category;
+public abstract class UseCase<IN, OUT> {
 
-public class UseCase {
-    public Category execute() {
-        return Category.newCategory("Filmes", "Category description", true);
-    }
+    public abstract OUT execute(IN anIn);
 }
