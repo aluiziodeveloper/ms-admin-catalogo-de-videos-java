@@ -5,6 +5,7 @@ import br.com.aluiziodeveloper.admin.catalogo.domain.category.CategoryGateway;
 import br.com.aluiziodeveloper.admin.catalogo.domain.category.CategoryID;
 import br.com.aluiziodeveloper.admin.catalogo.domain.category.CategorySearchQuery;
 import br.com.aluiziodeveloper.admin.catalogo.domain.pagination.Pagination;
+import br.com.aluiziodeveloper.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
 import br.com.aluiziodeveloper.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ public class CategoryMySQLGateway implements CategoryGateway {
     }
 
     @Override
-    public Category create(Category aCategory) {
-        return null;
+    public Category create(final Category aCategory) {
+        return this.repository.save(CategoryJpaEntity.from(aCategory)).toAggregate();
     }
 
     @Override
