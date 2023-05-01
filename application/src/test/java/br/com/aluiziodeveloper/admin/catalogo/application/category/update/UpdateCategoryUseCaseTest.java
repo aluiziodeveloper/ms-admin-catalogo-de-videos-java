@@ -27,12 +27,6 @@ public class UpdateCategoryUseCaseTest {
     @Mock
     private CategoryGateway categoryGateway;
 
-    // 1. Teste do caminho feliz
-    // 2. Teste passando uma propriedade inválida (name)
-    // 3. Teste atualizando uma categoria para inativa
-    // 4. Teste simulando um erro generico vindo do gateway
-    // 5. Teste atualizar categoria passando ID inválido
-
     @Test
     public void givenAValidCommand_whenCallsUpdateCategory_shouldReturnCategoryId() {
         final var aCategory = Category.newCategory("Film", null, true);
@@ -66,12 +60,12 @@ public class UpdateCategoryUseCaseTest {
         Mockito.verify(categoryGateway, times(1)).update(argThat(
             aUpdatedCategory ->
                 Objects.equals(expectedName, aUpdatedCategory.getName())
-                    && Objects.equals(expectedDescription, aUpdatedCategory.getDescription())
-                    && Objects.equals(expectedIsActive, aUpdatedCategory.isActive())
-                    && Objects.equals(expectedId, aUpdatedCategory.getId())
-                    && Objects.equals(aCategory.getCreatedAt(), aUpdatedCategory.getCreatedAt())
-                    && Objects.equals(aCategory.getUpdatedAt(), aUpdatedCategory.getUpdatedAt()) // TODO: Fix assertion
-                    && Objects.isNull(aUpdatedCategory.getDeletedAt())
+                        && Objects.equals(expectedDescription, aUpdatedCategory.getDescription())
+                        && Objects.equals(expectedIsActive, aUpdatedCategory.isActive())
+                        && Objects.equals(expectedId, aUpdatedCategory.getId())
+                        && Objects.equals(aCategory.getCreatedAt(), aUpdatedCategory.getCreatedAt())
+                        && aCategory.getUpdatedAt().isBefore(aUpdatedCategory.getUpdatedAt())
+                        && Objects.isNull(aUpdatedCategory.getDeletedAt())
         ));
     }
 }
