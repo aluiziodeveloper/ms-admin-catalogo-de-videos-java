@@ -1,9 +1,10 @@
 package br.com.aluiziodeveloper.admin.catalogo.infrastructure.category;
 
 import br.com.aluiziodeveloper.admin.catalogo.domain.category.Category;
+import br.com.aluiziodeveloper.admin.catalogo.domain.category.CategoryID;
 import br.com.aluiziodeveloper.admin.catalogo.infrastructure.MySQLGatewayTest;
-import br.com.aluiziodeveloper.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
 import br.com.aluiziodeveloper.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
+import br.com.aluiziodeveloper.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,5 +99,29 @@ public class CategoryMySQLGatewayTest {
         Assertions.assertTrue(aCategory.getUpdatedAt().isBefore(actualCategory.getUpdatedAt()));
         Assertions.assertEquals(aCategory.getDeletedAt(), actualEntity.getDeletedAt());
         Assertions.assertNull(actualEntity.getDeletedAt());
+    }
+
+    @Test
+    public void givenAPrePersistedCategoryAndValidCategoryId_whenTryToDeleteIt_shouldDeleteCategory() {
+        final var aCategory = Category.newCategory("Filmes", null, true);
+
+        Assertions.assertEquals(0, categoryRepository.count());
+
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(aCategory));
+
+        Assertions.assertEquals(1, categoryRepository.count());
+
+        categoryGateway.deleteById(aCategory.getId());
+
+        Assertions.assertEquals(0, categoryRepository.count());
+    }
+
+    @Test
+    public void givenInvalidCategoryId_whenTryToDeleteIt_shouldDeleteCategory() {
+        Assertions.assertEquals(0, categoryRepository.count());
+
+        categoryGateway.deleteById(CategoryID.from("invalid"));
+
+        Assertions.assertEquals(0, categoryRepository.count());
     }
 }
